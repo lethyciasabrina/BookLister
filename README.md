@@ -5,8 +5,8 @@ Book Lister é um aplicativo desenvolvido para facilitar o gerenciamento da sua 
 
 ## :camera_flash: Screenshots
 <!-- You can add more screenshots here if you like -->
-<img src="/result/splash_screen.png" width="260"> <img src="/result/home.png" width="260"> <img src="/result/new_book.png" width="260"> 
-<img src="/result/add_items.png" width="260"> <img src="result/description_book.png" width="260"> <img src="result/remove_items.png" width="260">
+<img src="/result/splash_screen.png" width="260">  <img src="/result/home.png" width="260">  <img src="/result/new_book.png" width="260"> 
+<img src="/result/add_items.png" width="260">  <img src="result/description_book.png" width="260">  <img src="result/remove_items.png" width="260">
 
 ## Funcionalidades
 * Splash Screen: Tela inicial de carregamento do aplicativo com uma imagem personalizada.
