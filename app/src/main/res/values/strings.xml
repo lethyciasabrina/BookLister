@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BookLister</string>
+    <string name="tvTitle">O poder do hábito</string>
+    <string name="toolbar_addbooks">New Book</string>
+    <string name="tvAddTitle">Título</string>
+    <string name="tvAddAuthor">Autor</string>
+    <string name="tvTitleDesc">O poder do hábito</string>
+    <string name="tvAuthorDesc">Charles Duhigg</string>
+</resources>

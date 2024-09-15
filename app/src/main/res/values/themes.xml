@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BookLister" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/dark_green</item>
+        <item name="colorPrimaryVariant">@color/light_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/dark_green</item>
+    </style>
+
+    <style name="Theme.BookLister" parent="Base.Theme.BookLister" />
+
+    <!-- Custom splash screen theme -->
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/dark_green</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/splash_booklister</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.BookLister</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/transparent</item>
+    </style>
+
+    <style name="colored_checkBox" parent="Theme.AppCompat.Light">
+        <!-- selected checkbox color -->
+        <item name="colorAccent">@color/dark_green</item>
+        <!-- default unselected checkbox color -->
+        <item name="android:textColorSecondary">@color/dark_gray</item>
+    </style>
+
+</resources>
