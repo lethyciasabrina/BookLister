@@ -30,8 +30,8 @@ Book Lister é um aplicativo desenvolvido para facilitar o gerenciamento da sua 
 * View Binding para simplificação de interações com a UI
 
 ### TODO
-- Adicionar sincronização em nuvem: Implementar funcionalidades para sincronizar dados com um serviço de armazenamento em nuvem, como Firebase ou AWS.
-- Implementar categorias de livros: Habilitar a organização dos livros por gênero, autor ou outros critérios.
+- Adicionar sistema de login: Permitir que os usuários façam login no aplicativo para personalizar seu perfil, incluindo foto, descrição e salvar suas preferências.
+- Implementar status de leitura dos livros: Adicionar a opção de marcar os livros como "não iniciado", "iniciado", "finalizado" ou "interrompido".
 - Possibilitar a edição das informações de um livro já adicionado: Permitir que o usuário edite o título, autor, e outros detalhes de um livro que já foi adicionado.
 - Melhorar o layout com animações e design mais moderno.
 - Implementar modo escuro: Adicionar um modo escuro para melhorar a usabilidade em ambientes com pouca luz.
