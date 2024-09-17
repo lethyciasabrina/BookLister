@@ -3,6 +3,8 @@ package com.example.booklister
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,9 +37,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Thread.sleep(3000)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+        }, 2000)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

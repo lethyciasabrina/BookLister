@@ -12,11 +12,12 @@
     <style name="Theme.BookLister" parent="Base.Theme.BookLister" />
 
     <!-- Custom splash screen theme -->
-    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+    <style name="MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/mysplash</item>
         <item name="windowSplashScreenBackground">@color/dark_green</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/splash_booklister</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.BookLister</item>
-        <item name="windowSplashScreenIconBackgroundColor">@color/transparent</item>
+
     </style>
 
     <style name="colored_checkBox" parent="Theme.AppCompat.Light">
