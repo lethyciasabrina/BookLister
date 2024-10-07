@@ -5,8 +5,9 @@ Book Lister is an app designed to help you manage your book list. It allows you 
 
 ## :camera_flash: Screenshots
 <!-- You can add more screenshots here if you like -->
-<img src="/result/book_home.png" width="260"> <img src="/result/book_toast_title.png" width="260"> <img src="/result/book_add.png" width="260"> <img src="/result/book_recycler.png" width="260"> <img src="/result/book_update.png" width="260">  
-<img src="/result/book_recycler2.png" width="260"> <img src="/result/book_delete.png" width="260"> <img src="/result/book_toast_delete.png" width="260"> <img src="/result/book_toast_deleted.png" width="260">
+<img src="/result/book_home.png" width="260"> <img src="/result/book_toast_title.png" width="260"> <img src="/result/book_add.png" width="260"> 
+<img src="/result/book_recycler.png" width="260"> <img src="/result/book_update.png" width="260"> <img src="/result/book_recycler2.png" width="260">
+<img src="/result/book_delete.png" width="260"> <img src="/result/book_toast_delete.png" width="260"> <img src="/result/book_toast_deleted.png" width="260">
 
 ## Features
 * Add Books: Users can add new books to their list, including title and author
