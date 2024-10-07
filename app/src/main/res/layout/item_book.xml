@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,7 +9,8 @@
         android:id="@+id/cvTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="17dp"
+        android:padding="17dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
@@ -21,7 +23,7 @@
             android:id="@+id/ctTodo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="17dp">
+            android:padding="19dp">
 
             <CheckBox
                 android:id="@+id/cbTodo"
@@ -30,9 +32,9 @@
                 android:scaleX="1.2"
                 android:scaleY="1.2"
                 android:theme="@style/colored_checkBox"
-                app:layout_constraintBottom_toBottomOf="@id/ctTodo"
-                app:layout_constraintStart_toStartOf="@id/ctTodo"
-                app:layout_constraintTop_toTopOf="@id/ctTodo" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -45,8 +47,30 @@
                 android:textColor="#273726"
                 android:textSize="19sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/pencilUpdate"
                 app:layout_constraintStart_toEndOf="@id/cbTodo"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Charles Duhhig"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+            <ImageView
+                android:id="@+id/pencilUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

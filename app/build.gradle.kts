@@ -50,4 +50,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.recyclerview.swipedecorator)
 }
