@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 } else {
                     Toast.makeText(
-                        this, "Title is required.",
+                        this, "Title is required",
                         Toast.LENGTH_LONG
                     ).show()
                 }
