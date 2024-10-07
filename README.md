@@ -1,6 +1,6 @@
 # Book Lister
 
-Book Lister is an app designed to help you manage your book list. It allows you to add, view, and organize your books in a simple and intuitive way.
+Book Lister is an app designed to help you manage your book list. It allows you to add, remove, and organize your books in a simple and intuitive way.
 
 
 ## :camera_flash: Screenshots
