@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class BookAdapter(
-    private val context: Context,
-    private var todoBook: MutableList<Book>
-) : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
+    private val context: Context
+) : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookAdapter.BookViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -28,7 +30,9 @@ class BookAdapter(
     }
 
     override fun onBindViewHolder(holder: BookAdapter.BookViewHolder, position: Int) {
-        val todo = todoBook[position]
+        val todo = getItem(position)
+        val book = getItem(position)
+
         holder.apply {
             tvTitle.text = todo.title
             if (todo.author.isNullOrEmpty()) {
@@ -41,65 +45,71 @@ class BookAdapter(
 
 //          Update item by clicking on the pencil icon
             pencilUpdate.setOnClickListener {
-
-                val dialogView = LayoutInflater.from(holder.itemView.context)
-                    .inflate(R.layout.custom_layout_update, null)
-
-                val edtCustomUpdateTitle =
-                    dialogView.findViewById<EditText>(R.id.edtCustomUpdateTitle)
-                val edtCustomUpdateAuthor =
-                    dialogView.findViewById<EditText>(R.id.edtCustomUpdateAuthor)
-                val btnCancelUpdate = dialogView.findViewById<Button>(R.id.btnCancelUpdate)
-                val btnUpdate = dialogView.findViewById<Button>(R.id.btnUpdate)
-
-                edtCustomUpdateTitle.setText(todo.title)
-                edtCustomUpdateAuthor.setText(todo.author)
-
-                val dialogBuilder = AlertDialog.Builder(holder.itemView.context)
-                    .setView(dialogView)
-                val dialog = dialogBuilder.create()
-
-                btnUpdate.setOnClickListener {
-                    val newTitle = edtCustomUpdateTitle.text.toString().trim()
-                    val newAuthor = edtCustomUpdateAuthor.text.toString().trim()
-
-                    if (newTitle.isNotEmpty()) {
-                        todo.title = newTitle
-                        todo.author = newAuthor
-                        notifyItemChanged(position)
-                        dialog.dismiss()
-                    } else {
-                        Toast.makeText(context, "Title is required", Toast.LENGTH_LONG).show()
-                    }
-
-                }
-                dialog.show()
-
-                btnCancelUpdate.setOnClickListener {
-                    dialog.dismiss()
+                val adapterPosition = bindingAdapterPosition
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    showUpdateDialog(todo, adapterPosition)
                 }
             }
 
 //          Listener of checkbox
             cbTodo.setOnCheckedChangeListener { _, isChecked ->
-                Handler(Looper.getMainLooper()).post {
-                    if (isChecked && position < todoBook.size) {
-                        todoBook.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, todoBook.size)
-                    } else {
-                        todo.isChecked = isChecked
-                        if (position < todoBook.size) {
-                            notifyItemChanged(position)
-                        }
-                    }
-                }
+                handleCheckBoxChange(book.id, isChecked)
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return todoBook.size
+    private fun showUpdateDialog(todo: Book, position: Int) {
+//      Implementation of the update dialog box
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.custom_layout_update, null)
+        val edtCustomUpdateTitle = dialogView.findViewById<EditText>(R.id.edtCustomUpdateTitle)
+        val edtCustomUpdateAuthor = dialogView.findViewById<EditText>(R.id.edtCustomUpdateAuthor)
+        val btnCancelUpdate = dialogView.findViewById<Button>(R.id.btnCancelUpdate)
+        val btnUpdate = dialogView.findViewById<Button>(R.id.btnUpdate)
+
+        edtCustomUpdateTitle.setText(todo.title)
+        edtCustomUpdateAuthor.setText(todo.author)
+
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        btnUpdate.setOnClickListener {
+            val newTitle = edtCustomUpdateTitle.text.toString().trim()
+            val newAuthor = edtCustomUpdateAuthor.text.toString().trim()
+
+            if (newTitle.isNotEmpty()) {
+                val updatedBook = todo.copy(title = newTitle, author = newAuthor)
+                val newList = currentList.toMutableList().apply {
+                    set(position, updatedBook)
+                }
+                submitList(newList)
+                dialog.dismiss()
+            } else {
+                Toast.makeText(context, "Title is required", Toast.LENGTH_LONG).show()
+            }
+        }
+        dialog.show()
+
+        btnCancelUpdate.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun handleCheckBoxChange(itemId: Long, isChecked: Boolean) {
+        val updatedList = currentList.toMutableList()
+//      Find index based on ID
+        val itemIndex = updatedList.indexOfFirst { it.id == itemId }
+        if (itemIndex != -1) {
+            if (isChecked) {
+                updatedList.removeAt(itemIndex)
+            } else {
+                updatedList[itemIndex] = updatedList[itemIndex].copy(isChecked = isChecked)
+            }
+            submitList(updatedList)
+            Log.d("BookAdapter", "Lista atualizada: ${updatedList.map { it.title }}")
+        } else {
+            Log.e("BookAdapter", "Item não encontrado para o ID: $itemId")
+        }
     }
 
     inner class BookViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -110,7 +120,22 @@ class BookAdapter(
     }
 
     fun deleteItem(adapterPosition: Int) {
-        todoBook.removeAt(adapterPosition)
-        notifyItemRemoved(adapterPosition)
+        if (adapterPosition != RecyclerView.NO_POSITION) {
+            val updatedList = currentList.toMutableList()
+            updatedList.removeAt(adapterPosition)
+            submitList(updatedList)
+        }
     }
+
+    //  Implementing DiffUtil to compare items
+    class BookDiffCallback : DiffUtil.ItemCallback<Book>() {
+        override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
+            return oldItem.title == newItem.title && oldItem.author == newItem.author
+        }
+
+        override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
+            return oldItem == newItem
+        }
+    }
+
 }

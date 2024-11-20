@@ -1,27 +1,23 @@
 package com.example.booklister
 
-import android.content.DialogInterface
 import android.graphics.Canvas
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklister.databinding.ActivityMainBinding
 import com.google.android.material.button.MaterialButton
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import java.util.Collections
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: BookAdapter
-    private val todoBooks = mutableListOf<Book>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +44,12 @@ class MainActivity : AppCompatActivity() {
                 val author = edtCustomAuthor.text.toString().trim()
 
                 if (title.isNotEmpty()) {
-                    val newBook = Book(title, author, false)
-                    todoBooks.add(newBook)
-                    adapter.notifyItemInserted(todoBooks.size - 1)
+                    val newBook = Book(id = System.currentTimeMillis(), title, author, false)
+                    val updatedList = adapter.currentList.toMutableList()
+                    updatedList.add(newBook)
+                    adapter.submitList(updatedList)
                     dialog.dismiss()
+                    Toast.makeText(this, "Book Added", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(
                         this, "Title is required",
@@ -65,44 +63,72 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        this.adapter = BookAdapter(this, todoBooks)
+        this.adapter = BookAdapter(this)
         binding.rvTodo.adapter = adapter
         binding.rvTodo.layoutManager = LinearLayoutManager(this)
         binding.rvTodo.setHasFixedSize(true)
 
 //      Swipe RecyclerView
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback
-            (0, ItemTouchHelper.LEFT) {
+            (
+//          Drag and drop support
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+//          Swipe support
+            ItemTouchHelper.LEFT
+        ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                return false
+//              Update list when moving items
+                val fromPosition = viewHolder.bindingAdapterPosition
+                val toPosition = target.bindingAdapterPosition
+                val updatedList = adapter.currentList.toMutableList()
+//              Update the list
+                Collections.swap(updatedList, fromPosition, toPosition)
+//              Update the adapter
+                adapter.submitList(updatedList)
+                return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 //              Show delete confirmation dialog
-                val dialogDelete = AlertDialog.Builder(viewHolder.itemView.context)
-                    .setTitle("Delete")
-                    .setMessage("Are you sure you want to delete this book?")
-                    .setPositiveButton("Delete") { dialog, _ ->
-                        val position = viewHolder.bindingAdapterPosition
-//                      Use Handler to safely delete item while RecyclerView is not computing layout
-                        Handler(Looper.getMainLooper()).post {
+                val position = viewHolder.bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val dialogDelete = AlertDialog.Builder(this@MainActivity)
+                        .setTitle("Delete")
+                        .setMessage("Are you sure you want to delete this book?")
+                        .setPositiveButton("Delete") { dialog, _ ->
                             adapter.deleteItem(position)
+                            dialog.dismiss()
+                            Toast.makeText(this@MainActivity, "Book Deleted", Toast.LENGTH_LONG)
+                                .show()
                         }
-                        dialog.dismiss()
-                        Toast.makeText(
-                            this@MainActivity, "Book Deleted", Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ ->
-                        adapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
-                        dialog.dismiss()
-                    }
-                    .create()
-                dialogDelete.show()
+                        .setNegativeButton("Cancel") { dialog, _ ->
+                            adapter.notifyItemChanged(position)
+                            dialog.dismiss()
+                        }
+                        .create()
+                    dialogDelete.show()
+                }
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+//                  Reduce the opacity of the dragged item to indicate that it is moving
+                    viewHolder?.itemView?.alpha = 0.5f
+                }
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+//              Restore item opacity when movement ends
+                viewHolder.itemView.alpha = 1.0f
             }
 
             //          Customize the appearance of the swipe using RecyclerViewSwipeDecorator

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookLister</string>
+    <string name="app_name">Book Lister</string>
     <string name="tvTitle">O poder do hábito</string>
     <string name="toolbar_addbooks">New Book</string>
     <string name="tvAddTitle">Título</string>
