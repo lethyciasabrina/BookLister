@@ -26,7 +26,7 @@ organize your books in a simple and intuitive way.
 * Activity for screen management
 * ViewGroup
     - ConstraintLayout
-* Componentes de UI
+* UI components
     - TextView
     - EditText
     - Button
