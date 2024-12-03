@@ -30,7 +30,7 @@ organize your books in a simple and intuitive way.
 * Activity for screen management
 * ViewGroup
     - ConstraintLayout
-* UI Components
+* UI components
     - TextView
     - EditText
     - Button
@@ -45,10 +45,11 @@ organize your books in a simple and intuitive way.
 
 - Add login system: Allow users to log in to the app to customize their profile, including photo,
   description, and saving preferences.
-- Implement reading status for books: Add an option to mark books as "not started," "in progress," "
-  finished," or "stopped."
+- Implement reading status for books: Use a ChipGroup to let users mark books as "Not Started," "In
+  Progress," "Finished," or "Stopped."
+- Enhance the search functionality: Filter books using the SearchView based on the selected reading
+  status from the ChipGroup.
 - Improve the layout with animations and a more modern design.
-- Implement dark mode: Add a dark mode for better usability in low-light environments.
 
 ## Author
 
