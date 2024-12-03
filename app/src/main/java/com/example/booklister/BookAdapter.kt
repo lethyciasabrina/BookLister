@@ -2,9 +2,6 @@ package com.example.booklister
 
 import android.app.AlertDialog
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +16,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class BookAdapter(
-    private val context: Context
+    private val context: Context,
+    private val onUpdate: (Book) -> Unit
 ) : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+
+    private var originalList: List<Book> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookAdapter.BookViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -35,7 +35,7 @@ class BookAdapter(
 
         holder.apply {
             tvTitle.text = todo.title
-            if (todo.author.isNullOrEmpty()) {
+            if (todo.author.isEmpty()) {
                 tvAuthor.visibility = View.GONE
             } else {
                 tvAuthor.text = todo.author
@@ -43,7 +43,6 @@ class BookAdapter(
             }
             cbTodo.isChecked = todo.isChecked
 
-//          Update item by clicking on the pencil icon
             pencilUpdate.setOnClickListener {
                 val adapterPosition = bindingAdapterPosition
                 if (adapterPosition != RecyclerView.NO_POSITION) {
@@ -51,7 +50,6 @@ class BookAdapter(
                 }
             }
 
-//          Listener of checkbox
             cbTodo.setOnCheckedChangeListener { _, isChecked ->
                 handleCheckBoxChange(book.id, isChecked)
             }
@@ -59,7 +57,6 @@ class BookAdapter(
     }
 
     private fun showUpdateDialog(todo: Book, position: Int) {
-//      Implementation of the update dialog box
         val dialogView = LayoutInflater.from(context).inflate(R.layout.custom_layout_update, null)
         val edtCustomUpdateTitle = dialogView.findViewById<EditText>(R.id.edtCustomUpdateTitle)
         val edtCustomUpdateAuthor = dialogView.findViewById<EditText>(R.id.edtCustomUpdateAuthor)
@@ -79,10 +76,7 @@ class BookAdapter(
 
             if (newTitle.isNotEmpty()) {
                 val updatedBook = todo.copy(title = newTitle, author = newAuthor)
-                val newList = currentList.toMutableList().apply {
-                    set(position, updatedBook)
-                }
-                submitList(newList)
+                onUpdate(updatedBook)
                 dialog.dismiss()
             } else {
                 Toast.makeText(context, "Title is required", Toast.LENGTH_LONG).show()
@@ -92,6 +86,14 @@ class BookAdapter(
 
         btnCancelUpdate.setOnClickListener {
             dialog.dismiss()
+        }
+    }
+
+    override fun submitList(list: List<Book>?) {
+        super.submitList(list)
+        if (list != null) {
+//          Update the original list
+            originalList = list.toMutableList()
         }
     }
 
@@ -106,9 +108,6 @@ class BookAdapter(
                 updatedList[itemIndex] = updatedList[itemIndex].copy(isChecked = isChecked)
             }
             submitList(updatedList)
-            Log.d("BookAdapter", "Lista atualizada: ${updatedList.map { it.title }}")
-        } else {
-            Log.e("BookAdapter", "Item não encontrado para o ID: $itemId")
         }
     }
 

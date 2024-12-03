@@ -55,6 +55,20 @@
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/edtCustomTitle" />
 
+        <!--    Finish this    -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtCustomAuthor"
+            app:singleSelection="true">
+
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"
             android:layout_width="110dp"
@@ -66,7 +80,7 @@
             app:backgroundTint="@color/dark_green"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtCustomAuthor" />
+            app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
@@ -79,7 +93,7 @@
             app:backgroundTint="@color/dark_gray"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toStartOf="@id/btnAdd"
-            app:layout_constraintTop_toBottomOf="@id/edtCustomAuthor" />
+            app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

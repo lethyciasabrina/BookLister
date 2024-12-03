@@ -3,6 +3,7 @@ package com.example.booklister
 import android.graphics.Canvas
 import android.os.Bundle
 import android.widget.EditText
+import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,14 +19,24 @@ import java.util.Collections
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: BookAdapter
+    private var originalList: List<Book> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         supportActionBar?.hide()
+
+        val searchView = binding.searchView
+
+        val rvTodo = binding.rvTodo
+        adapter = BookAdapter(this) { updatedBook ->
+            updateBook(updatedBook)
+        }
+        rvTodo.adapter = adapter
+        rvTodo.layoutManager = LinearLayoutManager(this)
+        rvTodo.setHasFixedSize(true)
+        adapter.submitList(originalList.toMutableList())
 
         binding.fabAddBook.setOnClickListener {
             val dialogView = layoutInflater.inflate(R.layout.custom_layout_add, null)
@@ -45,9 +56,8 @@ class MainActivity : AppCompatActivity() {
 
                 if (title.isNotEmpty()) {
                     val newBook = Book(id = System.currentTimeMillis(), title, author, false)
-                    val updatedList = adapter.currentList.toMutableList()
-                    updatedList.add(newBook)
-                    adapter.submitList(updatedList)
+                    originalList = originalList + newBook
+                    adapter.submitList(originalList.toMutableList())
                     dialog.dismiss()
                     Toast.makeText(this, "Book Added", Toast.LENGTH_LONG).show()
                 } else {
@@ -62,11 +72,6 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         }
-
-        this.adapter = BookAdapter(this)
-        binding.rvTodo.adapter = adapter
-        binding.rvTodo.layoutManager = LinearLayoutManager(this)
-        binding.rvTodo.setHasFixedSize(true)
 
 //      Swipe RecyclerView
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback
@@ -170,7 +175,45 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         })
-//      Attach the ItemTouchHelper to the RecyclerView
         itemTouchHelper.attachToRecyclerView(binding.rvTodo)
+
+        // Search Bar
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        filterList(it)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText.isNullOrEmpty()) {
+                        adapter.submitList(originalList.toMutableList())
+                    } else {
+                        filterList(newText)
+                    }
+                    return true
+                }
+            }
+        )
+    }
+
+    private fun filterList(query: String) {
+        val filteredList = originalList.filter {
+            it.title.contains(query, ignoreCase = true) ||
+                    it.author.contains(query, ignoreCase = true)
+        }
+        adapter.submitList(filteredList.toList())
+    }
+
+    private fun updateBook(updateBook: Book) {
+        val index = originalList.indexOfFirst { it.id == updateBook.id }
+        if (index != -1) {
+            val mutableList = originalList.toMutableList()
+            mutableList[index] = updateBook
+            originalList = mutableList
+            adapter.submitList(originalList.toMutableList())
+        }
     }
 }

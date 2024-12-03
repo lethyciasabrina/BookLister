@@ -6,9 +6,10 @@ organize your books in a simple and intuitive way.
 ## :camera_flash: Screenshots
 
 <!-- You can add more screenshots here if you like -->
-<img src="/result/book_home.png" width="260"> <img src="/result/book_add.png" width="260"> <img src="/result/book_toast_title.png" width="260"> 
-<img src="/result/book_recycler.png" width="260"> <img src="/result/book_update.png" width="260"> <img src="/result/book_recycler2.png" width="260">
-<img src="/result/book_delete.png" width="260"> <img src="/result/book_toast_delete.png" width="260"> <img src="/result/book_toast_deleted.png" width="260">
+<img src="/result/home.png" width="260" alt=""> <img src="/result/new_book_toast.png" width="260" alt="">
+<img src="/result/new_book.png" width="260" alt=""> <img src="/result/recyclerview.png" width="260" alt="">
+<img src="/result/swipe_delete.png" width="260" alt=""> <img src="/result/swipe_delete_dialog.png" width="260" alt="">
+<img src="/result/recyclerview2.png" width="260" alt=""> <img src="/result/searchview.png" width="260" alt="">
 
 ## Features
 
@@ -19,6 +20,9 @@ organize your books in a simple and intuitive way.
   RecyclerViewSwipeDecorator (https://github.com/xabaras/RecyclerViewSwipeDecorator).
 * Book Sorting: Allows the user to sort the list of books using the **drag and drop** functionality
   to improve organization.
+* Search for Books: Users can search for books in their list using a SearchView. The feature filters
+  the list dynamically by matching the query with book titles, providing an efficient way to locate
+  specific books.
 
 ## Technologies
 
@@ -26,13 +30,14 @@ organize your books in a simple and intuitive way.
 * Activity for screen management
 * ViewGroup
     - ConstraintLayout
-* Componentes de UI
+* UI Components
     - TextView
     - EditText
     - Button
     - Floating Action Button
     - RecyclerView (with Drag and Drop support)
     - AlertDialog
+    - SearchView (for dynamic filtering of book titles)
 * Toast for displaying messages
 * View Binding for easier UI interactions
 
