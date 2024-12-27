@@ -3,26 +3,20 @@
 Book Lister is an app designed to help you manage your book list. It allows you to add, remove, and
 organize your books in a simple and intuitive way.
 
-## :camera_flash: Screenshots
+## How It Works
 
-<!-- You can add more screenshots here if you like -->
-<img src="/result/home.png" width="260" alt=""> <img src="/result/new_book_toast.png" width="260" alt="">
-<img src="/result/new_book.png" width="260" alt=""> <img src="/result/recyclerview.png" width="260" alt="">
-<img src="/result/swipe_delete.png" width="260" alt=""> <img src="/result/swipe_delete_dialog.png" width="260" alt="">
-<img src="/result/recyclerview2.png" width="260" alt=""> <img src="/result/searchview.png" width="260" alt="">
+<!-- Soon ... -->
 
 ## Features
 
-* Add Books: Users can add new books to their list, including title and author
-* Edit Books: Users can edit the title or author of a book by clicking the pencil icon.
-* Remove Books: Users can remove books from the list by swiping from right to left. Swipe
-  functionality was implemented using the
+* Add Books: Users can add new books to their list using the + menu icon.
+* Edit Books: Users can edit a book's title and author by swiping from left to right on the book
+  item.
+* Remove Books: Users can remove books from their list by swiping from right to left on the book
+  item. Swipe functionality was implemented using the
   RecyclerViewSwipeDecorator (https://github.com/xabaras/RecyclerViewSwipeDecorator).
-* Book Sorting: Allows the user to sort the list of books using the **drag and drop** functionality
-  to improve organization.
-* Search for Books: Users can search for books in their list using a SearchView. The feature filters
-  the list dynamically by matching the query with book titles, providing an efficient way to locate
-  specific books.
+* Search for Books: Users can search for books in their list in real-time using a SearchView.
+* Mark as Read: Users can mark books as read using a checkbox on each book item.
 
 ## Technologies
 
@@ -34,22 +28,28 @@ organize your books in a simple and intuitive way.
     - TextView
     - EditText
     - Button
-    - Floating Action Button
-    - RecyclerView (with Drag and Drop support)
+    - CheckBox
+    - RecyclerView
     - AlertDialog
-    - SearchView (for dynamic filtering of book titles)
+    - SearchView
+* Swipe Functionality: Implemented using `RecyclerViewSwipeDecorator` for enhanced item swipe
+  interactions.
 * Toast for displaying messages
 * View Binding for easier UI interactions
 
 ### TODO
 
-- Add login system: Allow users to log in to the app to customize their profile, including photo,
-  description, and saving preferences.
 - Implement reading status for books: Use a ChipGroup to let users mark books as "Not Started," "In
   Progress," "Finished," or "Stopped."
 - Enhance the search functionality: Filter books using the SearchView based on the selected reading
   status from the ChipGroup.
-- Improve the layout with animations and a more modern design.
+- Refactor codebase to align with industry best practices: Improve code readability,
+  maintainability, and scalability by applying principles such as:
+    - SOLID principles for better object-oriented design.
+    - Separation of concerns and modularization for a cleaner architecture.
+    - Use of modern Android development patterns, like MVVM or MVI, and tools like ViewModel and
+      LiveData.
+    - Writing unit and integration tests to ensure code reliability and prevent bugs.
 
 ## Author
 

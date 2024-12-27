@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/color_white"
     app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +35,7 @@
             android:padding="12dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/txtCustomUpdate" />
 
@@ -49,22 +50,32 @@
             android:padding="12dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/edtCustomUpdateTitle" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtCustomUpdateAuthor"
+            app:singleSelection="true" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnUpdate"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Update"
-            android:textColor="@color/white"
+            android:text="Add"
+            android:textColor="@color/color_white"
             android:textSize="15sp"
-            app:backgroundTint="@color/dark_green"
+            app:backgroundTint="@color/color_forest_green"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtCustomUpdateAuthor" />
+            app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancelUpdate"
@@ -72,13 +83,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Cancel"
-            android:textColor="@color/white"
+            android:textColor="@color/color_white"
             android:textSize="15sp"
-            app:backgroundTint="@color/dark_gray"
+            app:backgroundTint="@color/color_charcoal_gray"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toStartOf="@id/btnUpdate"
-            app:layout_constraintTop_toBottomOf="@id/edtCustomUpdateAuthor" />
+            app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
+

@@ -2,16 +2,16 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.BookLister" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:statusBarColor">@color/light_green</item>
+        <item name="android:statusBarColor">@color/color_leaf_green</item>
     </style>
 
     <style name="Theme.BookLister" parent="Base.Theme.BookLister" />
 
     <style name="colored_checkBox" parent="Theme.AppCompat.Light">
         <!-- selected checkbox color -->
-        <item name="colorAccent">@color/dark_green</item>
+        <item name="colorAccent">@color/color_forest_green</item>
         <!-- default unselected checkbox color -->
-        <item name="android:textColorSecondary">@color/dark_gray</item>
+        <item name="android:textColorSecondary">@color/color_charcoal_gray</item>
     </style>
 
 

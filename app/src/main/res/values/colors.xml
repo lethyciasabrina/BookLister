@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="dark_green">#273726</color>
-    <color name="light_green">#457142</color>
-    <color name="dark_gray">#544C4C</color>
-    <color name="transparent">#00000000</color>
-    <color name="gray_light">#8E8B8B</color>
-    <color name="red">#D60F00</color>
-    <color name="gray">#CCCCCC</color>
+    <color name="color_black">#FF000000</color>
+    <color name="color_white">#FFFFFFFF</color>
+    <color name="color_forest_green">#273726</color>
+    <color name="color_leaf_green">#457142</color>
+    <color name="color_charcoal_gray">#544C4C</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="color_silver_gray">#8E8B8B</color>
+    <color name="color_crimson_red">#D60F00</color>
+    <color name="color_light_gray">#CCCCCC</color>
+    <color name="color_pale_gray">#F6EEEE</color>
+    <color name="color_ash_gray">#434242</color>
+    <color name="color_golden_yellow">#FFBA00</color>
 </resources>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/color_white"
     app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Book"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +36,7 @@
             android:padding="12dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/txtCustomAdd" />
 
@@ -51,11 +52,10 @@
             android:padding="12dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/edtCustomTitle" />
 
-        <!--    Finish this    -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggleGroup"
             android:layout_width="match_parent"
@@ -64,10 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtCustomAuthor"
-            app:singleSelection="true">
-
-
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+            app:singleSelection="true" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"
@@ -75,9 +72,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Add"
-            android:textColor="@color/white"
+            android:textColor="@color/color_white"
             android:textSize="15sp"
-            app:backgroundTint="@color/dark_green"
+            app:backgroundTint="@color/color_forest_green"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
@@ -88,9 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Cancel"
-            android:textColor="@color/white"
+            android:textColor="@color/color_white"
             android:textSize="15sp"
-            app:backgroundTint="@color/dark_gray"
+            app:backgroundTint="@color/color_charcoal_gray"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toStartOf="@id/btnAdd"
             app:layout_constraintTop_toBottomOf="@id/toggleGroup" />

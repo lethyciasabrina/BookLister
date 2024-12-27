@@ -2,6 +2,6 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.BookLister" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="android:statusBarColor">@color/light_green</item>
+        <item name="android:statusBarColor">@color/color_leaf_green</item>
     </style>
 </resources>
