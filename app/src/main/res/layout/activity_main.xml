@@ -39,16 +39,76 @@
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:queryHint="Search for a book..." />
 
+    <HorizontalScrollView
+        android:id="@+id/horizontalSV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status_chip_all"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="All Books"
+                android:checked="true"
+                android:textSize="16sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status_chip_not_started"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not Started"
+                android:textSize="16sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status_chip_in_progress"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In Progress"
+                android:textSize="16sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status_chip_stopped"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="Stopped"
+                android:textSize="16sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status_chip_done"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="Done"
+                android:textSize="16sp" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTodo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/horizontalSV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

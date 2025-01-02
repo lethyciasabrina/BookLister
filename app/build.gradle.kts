@@ -55,4 +55,5 @@ dependencies {
     implementation(libs.themed.toggle.button.group)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+
 }

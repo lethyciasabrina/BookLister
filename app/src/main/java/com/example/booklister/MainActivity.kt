@@ -3,6 +3,7 @@ package com.example.booklister
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.SearchView
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklister.databinding.ActivityMainBinding
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +25,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: BookAdapter
     private var originalList: List<Book> = listOf()
     private var bookList: MutableList<Book> = mutableListOf()
+
+    /* To-do:
+        Bottom Navigation (Add and Update Book)
+     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val searchView = binding.searchView
         val topAppBar = binding.topAppBar
         val rvTodo = binding.rvTodo
+        val chipGroup = binding.chipGroup
 
         adapter = BookAdapter(this) { updatedBook ->
             val index = originalList.indexOfFirst { it.id == updatedBook.id }
@@ -39,8 +47,9 @@ class MainActivity : AppCompatActivity() {
                 val updatedList = originalList.toMutableList()
                 updatedList[index] = updatedBook
                 originalList = updatedList
-                bookList = originalList.filter { !it.isChecked }.toMutableList()
-                adapter.submitList(bookList)
+                val selectedStatus = getSelectedStatus()
+                val query = binding.searchView.query.toString()
+                filterBooks(query, selectedStatus)
             } else {
                 Toast.makeText(this, "Book not found", Toast.LENGTH_LONG).show()
             }
@@ -66,27 +75,41 @@ class MainActivity : AppCompatActivity() {
                     val btnCancel = dialogView.findViewById<MaterialButton>(R.id.btnCancel)
                     val edtCustomTitle = dialogView.findViewById<EditText>(R.id.edtCustomTitle)
                     val edtCustomAuthor = dialogView.findViewById<EditText>(R.id.edtCustomAuthor)
+                    val chipGroup = dialogView.findViewById<ChipGroup>(R.id.chip_group)
 
                     btnAdd.setOnClickListener {
                         val title = edtCustomTitle.text.toString().trim()
                         val author = edtCustomAuthor.text.toString().trim()
+                        val selectedChipId = chipGroup.checkedChipId
+                        val selectedChip = if (selectedChipId != View.NO_ID) {
+                            dialogView.findViewById<Chip>(selectedChipId)?.text?.toString() ?: ""
+                        } else {
+                            ""
+                        }
 
-                        if (title.isNotEmpty()) {
+                        val selectedStatus = when (selectedChipId) {
+                            R.id.add_chip_not_started -> BookStatus.NOT_STARTED
+                            R.id.add_chip_in_progress -> BookStatus.IN_PROGRESS
+                            R.id.add_chip_stopped -> BookStatus.STOPPED
+                            else -> BookStatus.NOT_STARTED // Default
+                        }
+
+                        if (title.isNotEmpty() && selectedChip.isNotEmpty()) {
                             val newBook = Book(
                                 id = System.currentTimeMillis(),
-                                title,
-                                author,
-                                false
+                                title = title,
+                                author = author,
+                                false,
+                                status = selectedStatus
                             )
                             originalList = originalList + newBook
                             bookList = originalList.filter { !it.isChecked }.toMutableList()
-                            //bookList = originalList.toMutableList()
                             adapter.submitList(bookList)
                             dialog.dismiss()
                             Toast.makeText(this, "Book Added", Toast.LENGTH_LONG).show()
                         } else {
                             Toast.makeText(
-                                this, "Title is required",
+                                this, "Title and Status are required",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -104,35 +127,66 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.let {
-                        filterList(it)
-                    }
+                    val selectedStatus = getSelectedStatus()
+                    filterBooks(query, selectedStatus)
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    val selectedStatus = getSelectedStatus()
                     if (newText.isNullOrEmpty()) {
-                        adapter.submitList(originalList.filter { !it.isChecked }.toMutableList())
+                        filterBooks(null, selectedStatus)
                     } else {
-                        filterList(newText)
+                        filterBooks(newText, selectedStatus)
                     }
                     return true
                 }
             }).also {
             searchView.setOnCloseListener {
-                adapter.submitList(originalList.filter { !it.isChecked }.toMutableList())
+                val selectedStatus = getSelectedStatus()
+                filterBooks(null, selectedStatus)
                 false
             }
         }
+
+        chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            val selectedStatus = when {
+                checkedIds.contains(R.id.status_chip_all) -> null // All Books
+                checkedIds.contains(R.id.status_chip_not_started) -> BookStatus.NOT_STARTED
+                checkedIds.contains(R.id.status_chip_in_progress) -> BookStatus.IN_PROGRESS
+                checkedIds.contains(R.id.status_chip_stopped) -> BookStatus.STOPPED
+                checkedIds.contains(R.id.status_chip_done) -> BookStatus.DONE
+                else -> null
+            }
+            bookList = if (selectedStatus != null) {
+                originalList.filter { it.status == selectedStatus }.toMutableList()
+            } else {
+                originalList.toMutableList()
+            }
+            adapter.submitList(bookList)
+        }
     }
 
-    private fun filterList(query: String) {
-        val filteredList = originalList.filter {
-            (it.title.contains(query, ignoreCase = true) || it.author.contains(
-                query,
-                ignoreCase = true
-            )) &&
-                    !it.isChecked
+    private fun getSelectedStatus(): BookStatus? {
+        return when (binding.chipGroup.checkedChipId) {
+            R.id.status_chip_not_started -> BookStatus.NOT_STARTED
+            R.id.status_chip_in_progress -> BookStatus.IN_PROGRESS
+            R.id.status_chip_stopped -> BookStatus.STOPPED
+            R.id.status_chip_done -> BookStatus.DONE
+            else -> null // All Books
+        }
+    }
+
+    private fun filterBooks(query: String?, status: BookStatus?) {
+        val filteredList = originalList.filter { book ->
+            val matchesQuery = query?.let {
+                book.title.contains(it, ignoreCase = true) || book.author.contains(
+                    it,
+                    ignoreCase = true
+                )
+            } ?: true
+            val matchesStatus = status?.let { book.status == it } ?: true
+            matchesQuery && matchesStatus
         }
         bookList = filteredList.toMutableList()
         adapter.submitList(bookList)
@@ -255,11 +309,19 @@ class MainActivity : AppCompatActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.custom_layout_update, null)
         val edtCustomUpdateTitle = dialogView.findViewById<EditText>(R.id.edtCustomUpdateTitle)
         val edtCustomUpdateAuthor = dialogView.findViewById<EditText>(R.id.edtCustomUpdateAuthor)
+        val chipGroup = dialogView.findViewById<ChipGroup>(R.id.chip_group)
         val btnCancelUpdate = dialogView.findViewById<Button>(R.id.btnCancelUpdate)
         val btnUpdate = dialogView.findViewById<Button>(R.id.btnUpdate)
 
         edtCustomUpdateTitle.setText(book.title)
         edtCustomUpdateAuthor.setText(book.author)
+        when (book.status) {
+            BookStatus.NOT_STARTED -> chipGroup.check(R.id.update_chip_not_started)
+            BookStatus.IN_PROGRESS -> chipGroup.check(R.id.update_chip_in_progress)
+            BookStatus.STOPPED -> chipGroup.check(R.id.update_chip_stopped)
+            BookStatus.ALL_BOOKS -> TODO()
+            BookStatus.DONE -> TODO()
+        }
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -268,21 +330,31 @@ class MainActivity : AppCompatActivity() {
         btnUpdate.setOnClickListener {
             val newTitle = edtCustomUpdateTitle.text.toString().trim()
             val newAuthor = edtCustomUpdateAuthor.text.toString().trim()
+            val selectedChipId = chipGroup.checkedChipId
+
+            val newStatus = when (selectedChipId) {
+                R.id.update_chip_not_started -> BookStatus.NOT_STARTED
+                R.id.update_chip_in_progress -> BookStatus.IN_PROGRESS
+                R.id.update_chip_stopped -> BookStatus.STOPPED
+                else -> book.status // Mantém o status atual se nenhum for selecionado
+            }
 
             if (newTitle.isNotEmpty()) {
                 val updateBook = book.copy(
                     title = newTitle,
-                    author = newAuthor
+                    author = newAuthor,
+                    status = newStatus
                 )
                 val index = originalList.indexOfFirst { it.id == book.id }
                 if (index != -1) {
                     val updatedList = originalList.toMutableList()
                     updatedList[index] = updateBook
                     originalList = updatedList
-
-                    bookList = originalList.filter { !it.isChecked }.toMutableList()
-                    adapter.submitList(bookList)
+                    val selectedStatus = getSelectedStatus()
+                    val query = binding.searchView.query.toString()
+                    filterBooks(query, selectedStatus)
                     dialog.dismiss()
+                    Toast.makeText(this, "Book updated", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(this, "Book not found", Toast.LENGTH_LONG).show()
                 }

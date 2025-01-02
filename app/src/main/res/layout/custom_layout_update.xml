@@ -54,41 +54,92 @@
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/edtCustomUpdateTitle" />
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleGroup"
+        <TextView
+            android:id="@+id/txtStatusBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Status"
+            android:textColor="@color/color_black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtCustomUpdateAuthor" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalSV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:scrollbars="none"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtCustomUpdateAuthor"
-            app:singleSelection="true" />
+            app:layout_constraintTop_toBottomOf="@+id/txtStatusBook">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/update_chip_not_started"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Not Started"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/update_chip_in_progress"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="In Progress"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/update_chip_stopped"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Stopped"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnUpdate"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
             android:text="Add"
             android:textColor="@color/color_white"
             android:textSize="15sp"
             app:backgroundTint="@color/color_forest_green"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
+            app:layout_constraintTop_toBottomOf="@id/horizontalSV" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancelUpdate"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
             android:text="Cancel"
             android:textColor="@color/color_white"
             android:textSize="15sp"
             app:backgroundTint="@color/color_charcoal_gray"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toStartOf="@id/btnUpdate"
-            app:layout_constraintTop_toBottomOf="@id/toggleGroup" />
+            app:layout_constraintTop_toBottomOf="@id/horizontalSV" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

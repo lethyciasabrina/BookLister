@@ -32,9 +32,13 @@ class BookAdapter(
                 tvAuthor.text = book.author
                 tvAuthor.visibility = View.VISIBLE
             }
+            cbRead.setOnCheckedChangeListener(null)
             cbRead.isChecked = book.isChecked
             cbRead.setOnCheckedChangeListener { _, isChecked ->
-                val updatedBook = book.copy(isChecked = isChecked)
+                val updatedBook = book.copy(
+                    isChecked = isChecked,
+                    status = if (isChecked) BookStatus.DONE else BookStatus.NOT_STARTED
+                )
                 onBookChecked(updatedBook)
             }
         }
@@ -52,12 +56,11 @@ class BookAdapter(
 
     class BookDiffCallback : DiffUtil.ItemCallback<Book>() {
         override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
-            return oldItem.title == newItem.title && oldItem.author == newItem.author
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
             return oldItem == newItem
         }
     }
-
 }
