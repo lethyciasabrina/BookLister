@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_custom_dialog"
+    android:padding="30dp">
+
+    <TextView
+        android:id="@+id/txtCustomAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Book"
+        android:textColor="@color/color_white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtCustomTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_border"
+        android:ellipsize="end"
+        android:hint="Type the title"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textColor="@color/color_black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/txtCustomAdd" />
+
+    <EditText
+        android:id="@+id/edtCustomAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_border"
+        android:ellipsize="end"
+        android:hint="Type the author"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textColor="@color/color_black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/edtCustomTitle" />
+
+    <TextView
+        android:id="@+id/txtStatusBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Status"
+        android:textColor="@color/color_white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtCustomAuthor" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtStatusBook"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/add_chip_not_started"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Not Started"
+            android:textSize="15sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/add_chip_in_progress"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="In Progress"
+            android:textSize="15sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/add_chip_stopped"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Stopped"
+            android:textSize="15sp" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Add"
+        android:textColor="@color/color_white"
+        android:textSize="15sp"
+        app:backgroundTint="@color/color_forest_green"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chip_group" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Cancel"
+        android:textColor="@color/color_white"
+        android:textSize="15sp"
+        app:backgroundTint="@color/color_charcoal_gray"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@id/btnAdd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

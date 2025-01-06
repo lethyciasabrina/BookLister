@@ -14,8 +14,7 @@ Soon ...
 * Edit Books: Users can edit a book's title and author by swiping from left to right on the book
   item.
 * Remove Books: Users can remove books from their list by swiping from right to left on the book
-  item. Swipe functionality was implemented using the
-  RecyclerViewSwipeDecorator (https://github.com/xabaras/RecyclerViewSwipeDecorator).
+  item.
 * Search for Books: Users can search for books in their list in real-time using a SearchView.
 * Mark as Read: Users can mark books as read using a checkbox on each book item.
 * Filter Books by Status: Users can filter books based on their reading status using a Chip Group.
@@ -38,10 +37,10 @@ Soon ...
     - Button
     - CheckBox
     - RecyclerView
-    - AlertDialog
     - SearchView
     - Chip Group
-* Swipe Functionality: Implemented using `RecyclerViewSwipeDecorator` for enhanced item swipe
+    - Bottom Sheet
+* Swipe Functionality: Implemented using `RecyclerViewSwipeDecorator` (https://github.com/xabaras/RecyclerViewSwipeDecorator) for enhanced item swipe
   interactions.
 * Toast for displaying messages
 * View Binding for easier UI interactions
@@ -57,6 +56,7 @@ Soon ...
     - Writing unit and integration tests to ensure code reliability and prevent bugs.
 
 ### License
+
 ```
 The MIT License (MIT)
 

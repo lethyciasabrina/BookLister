@@ -2,9 +2,6 @@ package com.example.booklister
 
 import android.graphics.Canvas
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
@@ -15,8 +12,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklister.databinding.ActivityMainBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
@@ -27,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private var bookList: MutableList<Book> = mutableListOf()
 
     /* To-do:
-        Bottom Navigation (Add and Update Book)
+        Readme: How It Works
      */
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,58 +62,7 @@ class MainActivity : AppCompatActivity() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.ic_add -> {
-                    val dialogView = layoutInflater.inflate(R.layout.custom_layout_add, null)
-                    val dialog = AlertDialog.Builder(this)
-                        .setView(dialogView)
-                        .create()
-                    dialog.show()
-
-                    val btnAdd = dialogView.findViewById<MaterialButton>(R.id.btnAdd)
-                    val btnCancel = dialogView.findViewById<MaterialButton>(R.id.btnCancel)
-                    val edtCustomTitle = dialogView.findViewById<EditText>(R.id.edtCustomTitle)
-                    val edtCustomAuthor = dialogView.findViewById<EditText>(R.id.edtCustomAuthor)
-                    val chipGroup = dialogView.findViewById<ChipGroup>(R.id.chip_group)
-
-                    btnAdd.setOnClickListener {
-                        val title = edtCustomTitle.text.toString().trim()
-                        val author = edtCustomAuthor.text.toString().trim()
-                        val selectedChipId = chipGroup.checkedChipId
-                        val selectedChip = if (selectedChipId != View.NO_ID) {
-                            dialogView.findViewById<Chip>(selectedChipId)?.text?.toString() ?: ""
-                        } else {
-                            ""
-                        }
-
-                        val selectedStatus = when (selectedChipId) {
-                            R.id.add_chip_not_started -> BookStatus.NOT_STARTED
-                            R.id.add_chip_in_progress -> BookStatus.IN_PROGRESS
-                            R.id.add_chip_stopped -> BookStatus.STOPPED
-                            else -> BookStatus.NOT_STARTED // Default
-                        }
-
-                        if (title.isNotEmpty() && selectedChip.isNotEmpty()) {
-                            val newBook = Book(
-                                id = System.currentTimeMillis(),
-                                title = title,
-                                author = author,
-                                false,
-                                status = selectedStatus
-                            )
-                            originalList = originalList + newBook
-                            bookList = originalList.filter { !it.isChecked }.toMutableList()
-                            adapter.submitList(bookList)
-                            dialog.dismiss()
-                            Toast.makeText(this, "Book Added", Toast.LENGTH_LONG).show()
-                        } else {
-                            Toast.makeText(
-                                this, "Title and Status are required",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                    btnCancel.setOnClickListener {
-                        dialog.dismiss()
-                    }
+                    showBottomSheetAddDialog()
                     true
                 }
 
@@ -165,6 +111,54 @@ class MainActivity : AppCompatActivity() {
             }
             adapter.submitList(bookList)
         }
+    }
+
+    private fun showBottomSheetAddDialog() {
+        val bottomSheetView = layoutInflater.inflate(R.layout.custom_bottom_sheet_add, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(bottomSheetView)
+
+        val edtTitle = bottomSheetView.findViewById<EditText>(R.id.edtCustomTitle)
+        val edtAuthor = bottomSheetView.findViewById<EditText>(R.id.edtCustomAuthor)
+        val chipGroup = bottomSheetView.findViewById<ChipGroup>(R.id.chip_group)
+        val btnAdd = bottomSheetView.findViewById<MaterialButton>(R.id.btnAdd)
+        val btnCancel = bottomSheetView.findViewById<MaterialButton>(R.id.btnCancel)
+
+        btnAdd.setOnClickListener {
+            val title = edtTitle.text.toString().trim()
+            val author = edtAuthor.text.toString().trim()
+            val selectedChipId = chipGroup.checkedChipId
+
+            val selectedStatus = when (selectedChipId) {
+                R.id.add_chip_not_started -> BookStatus.NOT_STARTED
+                R.id.add_chip_in_progress -> BookStatus.IN_PROGRESS
+                R.id.add_chip_stopped -> BookStatus.STOPPED
+                else -> BookStatus.NOT_STARTED // Default
+            }
+
+            if (title.isNotEmpty()) {
+                val newBook = Book(
+                    id = System.currentTimeMillis(),
+                    title = title,
+                    author = author,
+                    isChecked = false,
+                    status = selectedStatus
+                )
+                originalList = originalList + newBook
+                bookList = originalList.toMutableList()
+                adapter.submitList(bookList)
+                dialog.dismiss()
+                Toast.makeText(this, "Book added", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Title is required", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun getSelectedStatus(): BookStatus? {
@@ -302,30 +296,31 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             .create()
+        adapter.notifyItemChanged(position)
         dialogDelete.show()
     }
 
     private fun editItem(book: Book, position: Int) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.custom_layout_update, null)
-        val edtCustomUpdateTitle = dialogView.findViewById<EditText>(R.id.edtCustomUpdateTitle)
-        val edtCustomUpdateAuthor = dialogView.findViewById<EditText>(R.id.edtCustomUpdateAuthor)
-        val chipGroup = dialogView.findViewById<ChipGroup>(R.id.chip_group)
-        val btnCancelUpdate = dialogView.findViewById<Button>(R.id.btnCancelUpdate)
-        val btnUpdate = dialogView.findViewById<Button>(R.id.btnUpdate)
+        val bottomSheetView = layoutInflater.inflate(R.layout.custom_bottom_sheet_update, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(bottomSheetView)
+
+        val edtCustomUpdateTitle = bottomSheetView.findViewById<EditText>(R.id.edtCustomUpdateTitle)
+        val edtCustomUpdateAuthor =
+            bottomSheetView.findViewById<EditText>(R.id.edtCustomUpdateAuthor)
+        val chipGroup = bottomSheetView.findViewById<ChipGroup>(R.id.chip_group)
+        val btnUpdate = bottomSheetView.findViewById<MaterialButton>(R.id.btnUpdate)
+        val btnCancel = bottomSheetView.findViewById<MaterialButton>(R.id.btnCancel)
 
         edtCustomUpdateTitle.setText(book.title)
         edtCustomUpdateAuthor.setText(book.author)
+
         when (book.status) {
             BookStatus.NOT_STARTED -> chipGroup.check(R.id.update_chip_not_started)
             BookStatus.IN_PROGRESS -> chipGroup.check(R.id.update_chip_in_progress)
             BookStatus.STOPPED -> chipGroup.check(R.id.update_chip_stopped)
-            BookStatus.ALL_BOOKS -> TODO()
-            BookStatus.DONE -> TODO()
+            else -> chipGroup.clearCheck()
         }
-
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .create()
 
         btnUpdate.setOnClickListener {
             val newTitle = edtCustomUpdateTitle.text.toString().trim()
@@ -336,11 +331,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.update_chip_not_started -> BookStatus.NOT_STARTED
                 R.id.update_chip_in_progress -> BookStatus.IN_PROGRESS
                 R.id.update_chip_stopped -> BookStatus.STOPPED
-                else -> book.status // Mantém o status atual se nenhum for selecionado
+                else -> book.status
             }
 
             if (newTitle.isNotEmpty()) {
-                val updateBook = book.copy(
+                val updatedBook = book.copy(
                     title = newTitle,
                     author = newAuthor,
                     status = newStatus
@@ -348,7 +343,7 @@ class MainActivity : AppCompatActivity() {
                 val index = originalList.indexOfFirst { it.id == book.id }
                 if (index != -1) {
                     val updatedList = originalList.toMutableList()
-                    updatedList[index] = updateBook
+                    updatedList[index] = updatedBook
                     originalList = updatedList
                     val selectedStatus = getSelectedStatus()
                     val query = binding.searchView.query.toString()
@@ -362,9 +357,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Title is required", Toast.LENGTH_LONG).show()
             }
         }
-        btnCancelUpdate.setOnClickListener {
+
+        btnCancel.setOnClickListener {
             dialog.dismiss()
         }
+
         dialog.show()
     }
 
