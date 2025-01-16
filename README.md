@@ -5,8 +5,7 @@ organize your books in a simple and intuitive way.
 
 ## How It Works
 
-Soon ...
-<!-- Soon ... -->
+![Demo](result/Book-Lister-App.gif)
 
 ## Features
 
@@ -40,7 +39,9 @@ Soon ...
     - SearchView
     - Chip Group
     - Bottom Sheet
-* Swipe Functionality: Implemented using `RecyclerViewSwipeDecorator` (https://github.com/xabaras/RecyclerViewSwipeDecorator) for enhanced item swipe
+* Swipe Functionality: Implemented using
+  `RecyclerViewSwipeDecorator` (https://github.com/xabaras/RecyclerViewSwipeDecorator) for enhanced
+  item swipe
   interactions.
 * Toast for displaying messages
 * View Binding for easier UI interactions
