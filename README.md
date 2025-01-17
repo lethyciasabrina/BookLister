@@ -5,7 +5,7 @@ organize your books in a simple and intuitive way.
 
 ## How It Works
 
-<img src="result/Book-Lister-App.gif" alt="Demo" width="300" height="200">
+<img src="result/Book-Lister-App.gif" alt="Demo" width="400" height="600">
 
 ## Features
 
